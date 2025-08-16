@@ -10,9 +10,10 @@ import { useToast } from '@/hooks/use-toast'
 interface NewsletterSignupProps {
   variant?: 'hero' | 'inline' | 'footer'
   className?: string
+  onImage?: boolean
 }
 
-export function NewsletterSignup({ variant = 'inline', className = '' }: NewsletterSignupProps) {
+export function NewsletterSignup({ variant = 'inline', className = '', onImage = false }: NewsletterSignupProps) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
@@ -137,11 +138,22 @@ export function NewsletterSignup({ variant = 'inline', className = '' }: Newslet
   // Default inline variant (revamped)
   return (
     <div className={`relative overflow-hidden rounded-3xl ${className}`}>
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-violet" />
-      <div className="absolute inset-0 bg-[radial-gradient(1200px_400px_at_100%_0%,rgba(255,255,255,0.18),transparent)]" />
-      <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-      <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+      {/* Background adapts if placed on an image */}
+      {onImage ? (
+        <>
+          <div className="absolute inset-0 bg-white/10" />
+          <div className="absolute inset-0 backdrop-blur-md" />
+          <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-gradient-violet" />
+          <div className="absolute inset-0 bg-[radial-gradient(1200px_400px_at_100%_0%,rgba(255,255,255,0.18),transparent)]" />
+          <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+        </>
+      )}
 
       <div className="relative p-6 sm:p-10 text-white">
         <div className="grid gap-8 sm:grid-cols-5 sm:items-center">
@@ -155,16 +167,16 @@ export function NewsletterSignup({ variant = 'inline', className = '' }: Newslet
               Start your week smarter with curated crypto & finance briefs
             </Typography>
             <ul className="grid gap-2 text-white/90 text-sm sm:grid-cols-2">
-              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-300" /> Actionable signals</li>
-              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-300" /> Macro + on-chain</li>
-              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-300" /> No noise, just signal</li>
-              <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-300" /> 3–5 min read</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> Actionable signals</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> Macro + on-chain</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> No noise, just signal</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> 3–5 min read</li>
             </ul>
           </div>
 
           {/* Right: Form card */}
           <div className="sm:col-span-2">
-            <form onSubmit={handleSubmit} className="relative rounded-2xl bg-white/10 p-4 sm:p-5 backdrop-blur-md border border-white/20 shadow-2xl">
+            <form onSubmit={handleSubmit} className={`relative rounded-2xl p-4 sm:p-5 border shadow-2xl ${onImage ? 'bg-white/10 border-white/25 backdrop-blur-md' : 'bg-white/10 border-white/20 backdrop-blur-md'}`}>
               <div className="space-y-3">
                 <div className="relative">
                   <Input

@@ -55,6 +55,8 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
           className="object-cover"
           sizes="100vw"
         />
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -65,7 +67,7 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
               <div className="space-y-6">
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-4">
                   <Sparkles className="h-6 w-6 text-brand-violet-tint animate-pulse" />
-                  <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
+                  <Badge variant="secondary" className="bg-white/15 text-white border border-white/20 backdrop-blur-sm px-3 py-1 font-medium">
                     Premium Insights
                   </Badge>
                 </div>
@@ -74,9 +76,9 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
                   Monday Sippin&apos;
                 </Typography>
                 
-                <Typography variant="lead" className="text-xl md:text-2xl mb-8 text-white/90 leading-relaxed max-w-2xl">
+                <Typography variant="lead" className="text-xl md:text-2xl mb-8 text-white drop-shadow-md leading-relaxed max-w-2xl">
                   Premium crypto & finance insights delivered in short, power-packed bits. 
-                  Perfect for your Monday morning coffee ritual.
+                  Perfect for your Monday morning coffee.
                 </Typography>
                 
                 <div className="flex items-center justify-center lg:justify-start space-x-6 text-white/80 text-sm">
@@ -103,7 +105,7 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
                 <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
                 <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
                   <div className="flex items-center space-x-2 mb-6">
-                    <Badge variant="secondary" className="bg-gradient-to-r from-brand-violet-dark to-brand-violet text-white font-semibold px-3 py-1 shadow-lg">
+                    <Badge variant="secondary" className="bg-white/15 text-white border border-white/20 backdrop-blur-sm font-semibold px-3 py-1">
                       ✨ Featured
                     </Badge>
                     {featuredArticle.category && (
@@ -149,8 +151,8 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
                   
                   <Link href={`/articles/${featuredArticle.slug}`}>
                     <Button 
-                      variant="secondary" 
-                      className="w-full bg-white text-brand-indigo-text hover:bg-white/95 font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      variant="brand-secondary"
+                      className="w-full font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
                     >
                       Read Article
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -174,8 +176,8 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
                   </Typography>
                   <Link href="/articles">
                     <Button 
-                      variant="secondary" 
-                      className="bg-white text-brand-indigo-text hover:bg-white/95 font-semibold py-3 px-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      variant="brand-secondary"
+                      className="font-semibold py-3 px-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
                     >
                       Browse Articles
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

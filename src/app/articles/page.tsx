@@ -168,7 +168,8 @@ function ArticlesPageContent() {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-[radial-gradient(800px_200px_at_50%_0%,rgba(0,0,0,0.25),transparent)]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 text-center">
           <Typography variant="h1" className="mb-2 sm:mb-4 text-white">
@@ -190,7 +191,7 @@ function ArticlesPageContent() {
           onFilterDeselect={deselectFilter}
           onClearFilters={clearFilters}
           loading={filtersLoading}
-          className="mb-8"
+          className="mb-8 sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/80 border-b"
         />
 
         {/* When filters are active, show filtered list instead of featured/grid */}
@@ -261,7 +262,7 @@ function ArticlesPageContent() {
                 return (
                   <Button
                     key={pageNum}
-                    variant={isActive ? "default" : "outline"}
+                    variant={isActive ? "brand-secondary" : "outline"}
                     size="sm"
                     onClick={() => handlePageChange(pageNum)}
                     disabled={loading}

@@ -68,7 +68,7 @@ export default function Home() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl py-6">
@@ -78,7 +78,7 @@ export default function Home() {
               <p className="text-base text-white/90 mb-8">
                 Actionable crypto and finance insights delivered every Monday. Sip your coffee, get smarter—no spam.
               </p>
-              <NewsletterSignup variant="inline" className="max-w-xl" />
+              <NewsletterSignup variant="inline" onImage className="max-w-xl" />
             </div>
           </div>
         </div>

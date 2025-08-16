@@ -36,8 +36,8 @@ export function ArticleCard({
 
   if (variant === 'featured') {
     return (
-      <Link href={`/articles/${article.slug}`} className="block h-full group">
-        <Card variant="elevated" className="overflow-hidden h-full flex flex-col">
+      <Link href={`/articles/${article.slug}`} className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/40 rounded-xl">
+        <Card variant="elevated" className="overflow-hidden h-full flex flex-col transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-0.5">
           <div className="relative w-full overflow-hidden" style={{ paddingTop: '56.25%' }}>
             <Image
               src={imgSrc}
@@ -171,8 +171,8 @@ export function ArticleCard({
 
   // Default variant
   return (
-    <Link href={`/articles/${article.slug}`} className="block h-full group">
-      <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow flex flex-col">
+    <Link href={`/articles/${article.slug}`} className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/40 rounded-xl">
+      <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 hover:border-brand-violet/40">
         <div className="relative w-full overflow-hidden" style={{ paddingTop: '56.25%' }}>
           <Image
             src={imgSrc}

@@ -22,11 +22,11 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // Monday Sippin' Brand Variants
         brand:
-          "bg-gradient-brand-primary text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold",
+          "bg-gradient-brand-primary text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold dark:hover:opacity-95",
         "brand-secondary":
-          "bg-gradient-brand-secondary text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold",
+          "bg-gradient-brand-secondary text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold dark:hover:opacity-95",
         "brand-accent":
-          "bg-gradient-brand-accent text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold",
+          "bg-gradient-brand-accent text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-semibold dark:hover:opacity-95",
         "brand-outline":
           "border-2 border-brand-deep-teal text-brand-deep-teal bg-transparent hover:bg-brand-deep-teal hover:text-white transition-all duration-200 font-semibold",
         "brand-ghost":

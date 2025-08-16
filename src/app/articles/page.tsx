@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { ArticleCard } from '@/components/articles'
 import { Typography } from '@/components/ui/typography'
 import { HorizontalFilterBar } from '@/components/filters/HorizontalFilterBar'
@@ -15,7 +15,7 @@ import { useFilters } from '@/hooks/useFilters'
 import Image from 'next/image'
 import articlesBg from '../../../assets/images/pexels-davidmcbee-730564.jpg'
 
-export default function ArticlesPage() {
+function ArticlesPageContent() {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -305,5 +305,21 @@ export default function ArticlesPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function ArticlesPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto" />
+          </div>
+        </div>
+      </div>
+    }>
+      <ArticlesPageContent />
+    </Suspense>
   )
 }

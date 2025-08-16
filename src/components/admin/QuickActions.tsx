@@ -14,13 +14,17 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-export function QuickActions() {
+interface QuickActionsProps {
+  onTabChange?: (tab: string) => void
+}
+
+export function QuickActions({ onTabChange }: QuickActionsProps) {
   const actions = [
     {
       title: 'Create Article',
       description: 'Write a new article',
       icon: Plus,
-      href: '/admin?tab=write',
+      action: () => onTabChange?.('write'),
       variant: 'default' as const
     },
     {
@@ -72,6 +76,28 @@ export function QuickActions() {
         <div className="grid grid-cols-2 gap-3">
           {actions.map((action) => {
             const Icon = action.icon
+            
+            if (action.action) {
+              // Handle tab switching actions
+              return (
+                <Button
+                  key={action.title}
+                  variant={action.variant}
+                  className="h-auto p-4 flex flex-col items-center gap-2"
+                  onClick={action.action}
+                >
+                  <Icon className="h-5 w-5" />
+                  <div className="text-center">
+                    <div className="font-medium text-sm">{action.title}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {action.description}
+                    </div>
+                  </div>
+                </Button>
+              )
+            }
+            
+            // Handle navigation actions
             return (
               <Button
                 key={action.title}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -133,5 +133,13 @@ function LoginPageContent() {
 }
 
 export default function LoginPage() {
-  return <LoginPageContent />
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"/>
+      </div>
+    }>
+      <LoginPageContent />
+    </Suspense>
+  )
 }

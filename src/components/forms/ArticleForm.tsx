@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { RichTextEditor } from '@/components/editor/RichTextEditor'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,8 @@ import { useArticleMutations } from '@/hooks/useArticleMutations'
 import { Article, ArticleFormData, Category, Tag, Filter, ArticleStatus } from '@/types'
 import { cn, calculateReadingTime, generateSlug } from '@/lib/utils'
 import { MediaPicker } from '@/components/media'
+import { useToast } from '@/hooks/use-toast'
+
 import { 
   Save, 
   Eye, 
@@ -35,6 +37,7 @@ interface ArticleFormProps {
 export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
   const router = useRouter()
   const { createArticle, updateArticle, creating, updating, error, clearError } = useArticleMutations()
+  const { toast } = useToast()
 
   // Form state
   const [formData, setFormData] = useState<ArticleFormData>({
@@ -63,6 +66,8 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
   const [newTagName, setNewTagName] = useState('')
   const [showNewTagInput, setShowNewTagInput] = useState(false)
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+  const [hasChanges, setHasChanges] = useState(false)
+  const didMountRef = useRef(false)
 
   // Load metadata on mount
   useEffect(() => {
@@ -76,6 +81,27 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
       setFormData(prev => ({ ...prev, slug }))
     }
   }, [formData.title, article])
+
+  // Track unsaved changes (skip first mount)
+  useEffect(() => {
+    if (didMountRef.current) {
+      setHasChanges(true)
+    } else {
+      didMountRef.current = true
+    }
+  }, [formData])
+
+  // Warn on browser/tab close with unsaved changes
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (hasChanges) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [hasChanges])
 
   // Calculate reading time when content changes
   useEffect(() => {
@@ -137,6 +163,11 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
       return url
     } catch (error) {
       console.error('Image upload failed:', error)
+      toast({
+        title: 'Image upload failed',
+        description: 'Please try again with a different image.',
+        variant: 'destructive'
+      })
       throw error
     } finally {
       setIsUploading(false)
@@ -202,9 +233,11 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
         handleTagSelect(newTag)
         setNewTagName('')
         setShowNewTagInput(false)
+        toast({ title: 'Tag created', description: `Added tag "${newTag.name}"`, variant: 'success', duration: 3000 })
       }
     } catch (error) {
       console.error('Failed to create tag:', error)
+      toast({ title: 'Failed to create tag', description: 'Please try again.', variant: 'destructive' })
     }
   }
 
@@ -234,6 +267,7 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
     const updatedFormData = { ...formData, status }
     
     if (!validateForm()) {
+      toast({ title: 'Fix form errors', description: 'Please correct highlighted fields.', variant: 'destructive' })
       return
     }
 
@@ -248,12 +282,23 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
 
       if (savedArticle) {
         onSave?.(savedArticle)
+        setHasChanges(false)
+        toast({
+          title: status === 'published' ? 'Article published' : 'Draft saved',
+          description: status === 'published' ? 'Your article is now live.' : 'Your draft has been saved.',
+          variant: 'success'
+        })
         if (!article) {
           router.push(`/admin/articles/${savedArticle.id}`)
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save article:', error)
+      const message = typeof error?.message === 'string' ? error.message : 'Something went wrong while saving.'
+      if (message.toLowerCase().includes('slug')) {
+        setValidationErrors(prev => ({ ...prev, slug: message }))
+      }
+      toast({ title: 'Failed to save', description: message, variant: 'destructive' })
     }
   }
 
@@ -274,7 +319,16 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
         
         <div className="flex items-center gap-3">
           {onCancel && (
-            <Button variant="outline" onClick={onCancel}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (hasChanges) {
+                  const ok = confirm('You have unsaved changes. Discard and leave?')
+                  if (!ok) return
+                }
+                onCancel()
+              }}
+            >
               Cancel
             </Button>
           )}
@@ -286,7 +340,7 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
             className="flex items-center gap-2"
           >
             <Save className="h-4 w-4" />
-            Save Draft
+            {isLoading ? 'Saving…' : 'Save Draft'}
           </Button>
           
           <Button
@@ -296,7 +350,7 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
             className="flex items-center gap-2"
           >
             <Eye className="h-4 w-4" />
-            {formData.status === 'published' ? 'Update' : 'Publish'}
+            {isLoading ? 'Publishing…' : (formData.status === 'published' ? 'Update' : 'Publish')}
           </Button>
         </div>
       </div>

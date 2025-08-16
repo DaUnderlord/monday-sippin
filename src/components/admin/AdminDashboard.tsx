@@ -181,7 +181,7 @@ export function AdminDashboard({ initialTab }: { initialTab?: string }) {
 
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <QuickActions />
+            <QuickActions onTabChange={setActiveTab} />
             
             <Card>
               <CardHeader>

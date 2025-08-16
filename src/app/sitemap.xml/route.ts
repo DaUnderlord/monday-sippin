@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin, supabase as supabaseClient } from '@/lib/supabase';
+export const runtime = 'nodejs';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mondaysippin.com';
 
@@ -12,7 +13,14 @@ interface SitemapUrl {
 
 export async function GET() {
   try {
-    const supabase = getSupabaseAdmin();
+    let supabase;
+    try {
+      // Prefer admin for unrestricted reads, but it's optional for sitemap
+      supabase = getSupabaseAdmin();
+    } catch (e) {
+      // Fallback to anon client if admin env is missing
+      supabase = supabaseClient;
+    }
 
     const urls: SitemapUrl[] = [];
 
@@ -90,7 +98,18 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error generating sitemap:', error);
-    return new NextResponse('Error generating sitemap', { status: 500 });
+    // Graceful fallback: return minimal static sitemap instead of failing build
+    const minimal = generateSitemapXML([
+      {
+        url: `${SITE_URL}/`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 1.0,
+      },
+    ]);
+    return new NextResponse(minimal, {
+      headers: { 'Content-Type': 'application/xml' },
+    });
   }
 }
 

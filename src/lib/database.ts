@@ -98,6 +98,16 @@ export const articleService = {
   async createArticle(articleData: ArticleFormData, authorId: string): Promise<Article> {
     const { tags, filters, ...articleFields } = articleData;
     
+    // Ensure slug is unique
+    const { data: existingWithSlug } = await supabase
+      .from('articles')
+      .select('id')
+      .eq('slug', articleFields.slug)
+      .limit(1);
+    if (existingWithSlug && existingWithSlug.length > 0) {
+      throw new Error('An article with this slug already exists');
+    }
+    
     // Calculate reading time
     const readingTime = calculateReadingTime(articleFields.content);
     
@@ -107,7 +117,9 @@ export const articleService = {
       .insert({
         ...articleFields,
         author_id: authorId,
-        reading_time: readingTime
+        reading_time: readingTime,
+        // Set published_at automatically when status is published
+        published_at: articleFields.status === 'published' ? new Date().toISOString() : null
       })
       .select()
       .single();
@@ -150,9 +162,27 @@ export const articleService = {
     
     // Calculate reading time if content is being updated
     // Widen type to allow reading_time which is not part of ArticleFormData
-    const updateData: Partial<ArticleFormData> & { reading_time?: number } = { ...articleFields };
+    const updateData: Partial<ArticleFormData> & { reading_time?: number; published_at?: string | null } = { ...articleFields };
     if (articleFields.content) {
       updateData.reading_time = calculateReadingTime(articleFields.content);
+    }
+    
+    // Ensure slug is unique when updating
+    if (articleFields.slug) {
+      const { data: existingWithSlug } = await supabase
+        .from('articles')
+        .select('id')
+        .eq('slug', articleFields.slug)
+        .neq('id', articleId)
+        .limit(1);
+      if (existingWithSlug && existingWithSlug.length > 0) {
+        throw new Error('An article with this slug already exists');
+      }
+    }
+    
+    // If setting status to published, ensure published_at is set
+    if (articleFields.status === 'published') {
+      updateData.published_at = new Date().toISOString();
     }
     
     // Update the article

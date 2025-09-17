@@ -7,11 +7,31 @@ import { LottieHero } from '@/components/media/LottieHero'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import CoffeeTimeAnim from '@/../assets/images/CoffeTime.json'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import GreenCoffeeAnim from '@/../assets/images/greencoffee.json'
+import { useEffect, useState } from 'react'
 import { useHomepageData } from '@/hooks/useHomepageData'
 import Image from 'next/image'
 import newsletterImg from '../../assets/images/pexels-alesiakozik-6771607.jpg'
 
 export default function Home() {
+  const [isDark, setIsDark] = useState(false)
+  useEffect(() => {
+    try {
+      const update = () => setIsDark(document.documentElement.classList.contains('dark'))
+      update()
+      const mql = window.matchMedia('(prefers-color-scheme: dark)')
+      const onChange = () => update()
+      mql.addEventListener?.('change', onChange)
+      const observer = new MutationObserver(update)
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+      return () => {
+        mql.removeEventListener?.('change', onChange)
+        observer.disconnect()
+      }
+    } catch {}
+  }, [])
   const {
     featuredArticle,
     latestArticles,
@@ -95,7 +115,7 @@ export default function Home() {
             </div>
             {/* Lottie */}
             <div className="order-1 lg:order-2 w-full h-64 sm:h-72 md:h-80 lg:h-[28rem] xl:h-[32rem]">
-              <LottieHero className="w-full h-full" loop autoplay speed={1} jsonData={CoffeeTimeAnim} />
+              <LottieHero className="w-full h-full" loop autoplay speed={1} jsonData={isDark ? GreenCoffeeAnim : CoffeeTimeAnim} />
             </div>
           </div>
         </div>

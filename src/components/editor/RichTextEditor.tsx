@@ -41,6 +41,7 @@ interface RichTextEditorProps {
   placeholder?: string
   className?: string
   onImageUpload?: (file: File) => Promise<string>
+  onVideoUpload?: (file: File) => Promise<string>
 }
 
 export function RichTextEditor({ 
@@ -48,7 +49,8 @@ export function RichTextEditor({
   onChange, 
   placeholder = "Start writing your article...",
   className = "",
-  onImageUpload
+  onImageUpload,
+  onVideoUpload
 }: RichTextEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const editor = useEditor({
@@ -106,10 +108,23 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[300px] p-4',
+        spellcheck: 'false',
+      },
+      handleKeyDown: (view, event) => {
+        // Fix cursor navigation issues
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || 
+            event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+          // Let the editor handle navigation naturally
+          return false
+        }
+        return false
       },
     },
     // Avoid SSR hydration mismatches with Next.js by deferring initial render
     immediatelyRender: false,
+    // Enable better cursor handling
+    enableInputRules: true,
+    enablePasteRules: true,
   })
 
   useEffect(() => {
@@ -360,23 +375,10 @@ export function RichTextEditor({
 
       {/* Media Picker Modal */}
       {showMediaPicker && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto">
-            <MediaPicker
-              onSelect={handleMediaSelect}
-              acceptedTypes={['image', 'video', 'embed']}
-              trigger={null}
-            />
-            <div className="p-4 border-t flex justify-end">
-              <Button
-                variant="outline"
-                onClick={() => setShowMediaPicker(false)}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
+        <MediaPicker
+          onSelect={handleMediaSelect}
+          acceptedTypes={['image', 'video', 'embed']}
+        />
       )}
     </div>
   )

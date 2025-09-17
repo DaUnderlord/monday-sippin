@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Typography } from '@/components/ui/typography'
 import { Mail, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import { motion } from 'framer-motion'
 
 interface NewsletterSignupProps {
   variant?: 'hero' | 'inline' | 'footer'
@@ -59,7 +60,12 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
 
   if (subscribed) {
     return (
-      <div className={`relative overflow-hidden rounded-2xl border border-emerald-200/40 bg-emerald-50 p-5 sm:p-6 ${className}`}>
+      <motion.div 
+        initial={{ opacity: 0, y: 8 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+        className={`relative overflow-hidden rounded-2xl border border-emerald-200/40 bg-emerald-50 p-5 sm:p-6 ${className}`}
+      >
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-200/40 blur-2xl" />
         <div className="flex items-start sm:items-center gap-3">
           <div className="shrink-0 rounded-full bg-white p-2 shadow-sm">
@@ -72,13 +78,20 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
             </Typography>
           </div>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   if (variant === 'hero') {
     return (
-      <form onSubmit={handleSubmit} className={`w-full ${className}`}>
+      <motion.form 
+        onSubmit={handleSubmit} 
+        className={`w-full ${className}`}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
         <div className="mx-auto grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
           <Input
             type="email"
@@ -99,16 +112,22 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
         <div className="mt-3 text-center">
           <Typography variant="small" className="text-white/80">No spam. Unsubscribe anytime.</Typography>
         </div>
-      </form>
+      </motion.form>
     )
   }
 
   if (variant === 'footer') {
     return (
-      <div className={`space-y-3 ${className}`}>
+      <motion.div 
+        className={`space-y-3 ${className}`}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
         <div className="flex items-center gap-2">
           <Mail className="h-4 w-4 text-brand-violet-tint" />
-          <Typography variant="body-small" className="text-white/90">Join the newsletter</Typography>
+          <Typography variant="body-small" className="text-white/90">Join Big Sippin’</Typography>
         </div>
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
           <div className="relative flex-1">
@@ -131,13 +150,19 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
           </div>
         </form>
         <Typography variant="body-small" className="text-white/60">Weekly. No spam.</Typography>
-      </div>
+      </motion.div>
     )
   }
 
   // Default inline variant (revamped)
   return (
-    <div className={`relative overflow-hidden rounded-3xl ${className}`}>
+    <motion.div 
+      className={`relative overflow-hidden rounded-3xl group ${className}`}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+    >
       {/* Background adapts if placed on an image */}
       {onImage ? (
         <>
@@ -161,22 +186,22 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
           <div className="sm:col-span-3 space-y-4">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur">
               <Mail className="h-4 w-4 text-brand-violet-tint" />
-              Weekly insights, every Monday
+              Big Sippin’
             </div>
             <Typography variant="h3" className="font-extrabold leading-tight">
               Start your week smarter with curated crypto & finance briefs
             </Typography>
             <ul className="grid gap-2 text-white/90 text-sm sm:grid-cols-2">
-              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> Actionable signals</li>
-              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> Macro + on-chain</li>
-              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> No noise, just signal</li>
-              <li className="flex items-center gap-2"><CheckCircle className={`h-4 w-4 ${onImage ? 'text-white/85' : 'text-emerald-300'}`} /> 3–5 min read</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`${onImage ? 'text-white/85' : 'text-emerald-300'} h-4 w-4`} /> Actionable signals</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`${onImage ? 'text-white/85' : 'text-emerald-300'} h-4 w-4`} /> Macro + on-chain</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`${onImage ? 'text-white/85' : 'text-emerald-300'} h-4 w-4`} /> No noise, just signal</li>
+              <li className="flex items-center gap-2"><CheckCircle className={`${onImage ? 'text-white/85' : 'text-emerald-300'} h-4 w-4`} /> 3–5 min read</li>
             </ul>
           </div>
 
           {/* Right: Form card */}
           <div className="sm:col-span-2">
-            <form onSubmit={handleSubmit} className={`relative rounded-2xl p-4 sm:p-5 border shadow-2xl ${onImage ? 'bg-white/10 border-white/25 backdrop-blur-md' : 'bg-white/10 border-white/20 backdrop-blur-md'}`}>
+            <form onSubmit={handleSubmit} className={`relative rounded-2xl p-4 sm:p-5 border shadow-2xl transition-all ${onImage ? 'bg-white/10 border-white/25 backdrop-blur-md' : 'bg-white/10 border-white/20 backdrop-blur-md'} group-hover:shadow-[0_20px_50px_-12px_rgba(104,69,255,0.35)]`}>
               <div className="space-y-3">
                 <div className="relative">
                   <Input
@@ -192,7 +217,7 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
                     disabled={loading}
                     className="absolute right-1 top-1 h-10 rounded-xl bg-white text-brand-indigo-text hover:bg-white/90 font-semibold px-4"
                   >
-                    {loading ? 'Joining…' : 'Join Free'}
+                    {loading ? 'Joining…' : 'Join Big Sippin’'}
                   </Button>
                 </div>
                 <div className="flex items-center justify-between text-xs text-white/75">
@@ -204,6 +229,6 @@ export function NewsletterSignup({ variant = 'inline', className = '', onImage =
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

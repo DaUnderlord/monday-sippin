@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { ArticleCard } from '@/components/articles/ArticleCard'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 interface LatestArticlesProps {
   articles: Article[]
@@ -15,25 +16,21 @@ interface LatestArticlesProps {
 export function LatestArticles({ articles, loading }: LatestArticlesProps) {
   if (loading) {
     return (
-      <section className="py-16 bg-white dark:bg-[#0b0b12] text-gray-900 dark:text-gray-100">
+      <section className="py-20 bg-gradient-to-b from-white to-slate-50 dark:from-slate-700 dark:to-slate-800 text-gray-900 dark:text-slate-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Typography variant="h2" className="mb-4">
-              Latest Articles
-            </Typography>
-            <Typography variant="body" className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Stay up to date with our newest insights and analysis
-            </Typography>
+          <div className="text-center mb-16">
+            <div className="h-8 w-48 mx-auto rounded-md bg-black/10 dark:bg-white/10 animate-pulse" />
+            <div className="h-4 w-72 mx-auto mt-3 rounded-md bg-black/10 dark:bg-white/10 animate-pulse" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="animate-pulse">
-                <div className="bg-gray-200 dark:bg-slate-800 h-48 rounded-lg mb-4"></div>
+                <div className="h-48 rounded-xl bg-black/10 dark:bg-white/10 mb-4" />
                 <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 dark:bg-slate-800 rounded"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-slate-800 rounded w-3/4"></div>
-                  <div className="h-3 bg-gray-200 dark:bg-slate-800 rounded w-1/2"></div>
+                  <div className="h-4 rounded-md bg-black/10 dark:bg-white/10" />
+                  <div className="h-4 w-3/4 rounded-md bg-black/10 dark:bg-white/10" />
+                  <div className="h-3 w-1/2 rounded-md bg-black/10 dark:bg-white/10" />
                 </div>
               </div>
             ))}
@@ -45,14 +42,24 @@ export function LatestArticles({ articles, loading }: LatestArticlesProps) {
 
   if (!articles.length) {
     return (
-      <section className="py-16 bg-white dark:bg-[#0b0b12] text-gray-900 dark:text-gray-100">
+      <section className="py-20 bg-gradient-to-b from-white to-slate-50 dark:from-slate-700 dark:to-slate-800 text-gray-900 dark:text-slate-100 relative">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-30 dark:opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-violet/5 via-transparent to-brand-violet/5" />
+        </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <Typography variant="h2" className="mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 text-brand-violet dark:text-brand-violet-light text-sm font-medium mb-4">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+              </svg>
+              Fresh Insights
+            </div>
+            <Typography variant="h2" className="mb-4 text-slate-900 dark:text-white">
               Latest Articles
             </Typography>
-            <Typography variant="body" className="text-gray-600 dark:text-gray-300 mb-8">
-              Our latest articles will appear here once published.
+            <Typography variant="body" className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+              Stay ahead with our newest market insights, on-chain analysis, and strategic perspectives
             </Typography>
             <Link href="/admin/articles/new">
               <Button>
@@ -67,33 +74,42 @@ export function LatestArticles({ articles, loading }: LatestArticlesProps) {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50/50 dark:from-[#0b0b12] dark:to-[#0b0b12] text-gray-900 dark:text-gray-100">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-deep-teal/10 to-brand-sage-green/10 rounded-full px-4 py-2 mb-6">
-            <div className="w-2 h-2 bg-brand-warm-orange rounded-full animate-pulse"></div>
-            <Typography variant="small" className="text-brand-deep-teal font-semibold">
-              Fresh Content
-            </Typography>
+    <section className="py-20 bg-gradient-to-b from-white to-slate-50 dark:from-slate-700 dark:to-slate-800 text-gray-900 dark:text-slate-100 relative">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-30 dark:opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-violet/5 via-transparent to-brand-violet/5" />
+      </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 text-brand-violet dark:text-brand-violet-light text-sm font-medium mb-4">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+            </svg>
+            Fresh Insights
           </div>
-          
-          <Typography variant="h2" className="mb-6 text-gradient-brand-primary text-4xl md:text-5xl font-extrabold">
+          <Typography variant="h2" className="mb-4 text-slate-900 dark:text-white">
             Latest Articles
           </Typography>
-          <Typography variant="body" className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
-            Stay ahead of the curve with our expertly curated content on crypto, 
-            finance, and business strategy. Each piece is crafted to deliver maximum value in minimum time.
+          <Typography variant="body" className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            Stay ahead with our newest market insights, on-chain analysis, and strategic perspectives
           </Typography>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 items-stretch">
           {articles.map((article, index) => (
-            <div 
+            <motion.div 
               key={article.id}
               className="group h-full"
-              style={{
-                animationDelay: `${index * 100}ms`
-              }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.05 * index, ease: 'easeOut' }}
             >
               <ArticleCard
                 article={article}
@@ -103,7 +119,7 @@ export function LatestArticles({ articles, loading }: LatestArticlesProps) {
                 showTags={true}
                 showStats={true}
               />
-            </div>
+            </motion.div>
           ))}
         </div>
 

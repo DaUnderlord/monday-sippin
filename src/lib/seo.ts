@@ -23,6 +23,7 @@ const DEFAULT_SEO = {
   twitterHandle: '@mondaysippin',
 };
 
+
 export function generateMetadata(config: SEOConfig): Metadata {
   const {
     title,
@@ -110,12 +111,12 @@ export function generateArticleMetadata(article: Article, category?: Category): 
     title: article.title,
     description: article.excerpt || article.title,
     keywords,
-    image: article.featuredImage || DEFAULT_SEO.image,
+    image: article.featured_image || DEFAULT_SEO.image,
     url: `/articles/${article.slug}`,
     type: 'article',
-    publishedTime: article.publishedAt?.toISOString(),
-    modifiedTime: article.updatedAt?.toISOString(),
-    author: article.author?.fullName || 'Monday Sippin Team',
+    publishedTime: article.published_at,
+    modifiedTime: article.updated_at,
+    author: article.author?.full_name || 'Monday Sippin Team',
     section: category?.name,
     tags: article.tags?.map(tag => tag.name) || [],
   });
@@ -137,4 +138,77 @@ export function generateHomeMetadata(): Metadata {
     keywords: ['crypto', 'finance', 'business', 'DeFi', 'blockchain', 'investment', 'small business'],
     url: '/',
   });
+}
+
+// SEO Analytics Integration
+export interface SEOAnalytics {
+  trackPageView: (url: string, title: string) => void;
+  trackEvent: (action: string, category: string, label?: string) => void;
+  trackArticleRead: (articleId: string, title: string, category?: string) => void;
+  trackSearch: (query: string, results: number) => void;
+}
+
+export function createSEOAnalytics(): SEOAnalytics {
+  return {
+    trackPageView: (url: string, title: string) => {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!, {
+          page_path: url,
+          page_title: title,
+        });
+      }
+    },
+    
+    trackEvent: (action: string, category: string, label?: string) => {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', action, {
+          event_category: category,
+          event_label: label,
+        });
+      }
+    },
+    
+    trackArticleRead: (articleId: string, title: string, category?: string) => {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'article_read', {
+          event_category: 'engagement',
+          event_label: title,
+          custom_parameter_1: articleId,
+          custom_parameter_2: category,
+        });
+      }
+    },
+    
+    trackSearch: (query: string, results: number) => {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'search', {
+          search_term: query,
+          event_category: 'search',
+          custom_parameter_1: results,
+        });
+      }
+    },
+  };
+}
+
+// Third-party SEO tools integration
+export function generateSitemapEntry(url: string, lastModified?: Date, priority = 0.5) {
+  return {
+    url,
+    lastModified: lastModified || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority,
+  };
+}
+
+export function generateRobotsTxt() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mondaysippin.com';
+  
+  return `User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: ${siteUrl}/sitemap.xml`;
 }

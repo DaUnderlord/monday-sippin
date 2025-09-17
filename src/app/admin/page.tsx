@@ -6,9 +6,8 @@ export const metadata: Metadata = {
   description: 'Administrative dashboard for Monday Sippin\' publication',
 }
 
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
-  const sp = await searchParams
-  const tabParam = sp?.tab
+export default function AdminPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+  const tabParam = searchParams?.tab
   const initialTab = Array.isArray(tabParam) ? tabParam[0] : tabParam
   return (
     // Client-side guard handles access; render directly

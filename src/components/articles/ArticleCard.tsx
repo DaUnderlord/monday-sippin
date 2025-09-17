@@ -10,6 +10,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import localFallback from '../../../assets/images/pexels-weekendplayer-187041.jpg'
+import a1 from '../../../assets/articles/Tesla.jpg'
+import a2 from '../../../assets/articles/Tether-ends-USDT-support-on-Omni-and-Bitcoin-Cash-780x470.jpg'
+import a3 from '../../../assets/articles/analisi-prezzo-crypto-bnb-ondo.webp'
+import a4 from '../../../assets/articles/apple-logo-smartphone-stock-market-investing-concept_BLU_A96598809.jpg'
+import a5 from '../../../assets/articles/bnb-800-dollarsfile.jpeg'
+import a6 from '../../../assets/articles/how-to-buy-bitcoin_new.png'
+import a7 from '../../../assets/articles/pexels-rdne-8370747.jpg'
+import a8 from '../../../assets/articles/unnamed.png'
+import a9 from '../../../assets/articles/vitalik_buterin_eth.png'
 
 interface ArticleCardProps {
   article: Article
@@ -30,8 +39,11 @@ export function ArticleCard({
 }: ArticleCardProps) {
   const publishedDate = article.published_at ? new Date(article.published_at) : new Date(article.created_at)
   const timeAgo = formatDistanceToNow(publishedDate, { addSuffix: true })
-  const isHttpUrl = (url?: string) => !!url && /^https?:\/\//i.test(url)
-  const imgSrc = isHttpUrl(article.featured_image) ? (article.featured_image as string) : localFallback
+  const fallbacks = [a1, a2, a3, a4, a5, a6, a7, a8, a9, localFallback]
+  const slug = article.slug || article.id || ''
+  const index = Math.abs(Array.from(slug).reduce((acc, ch) => acc + ch.charCodeAt(0), 0)) % fallbacks.length
+  // Always use local curated images for a consistent demo look
+  const imgSrc = fallbacks[index]
   const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSIjZWVlIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+'
 
   if (variant === 'featured') {
@@ -172,7 +184,7 @@ export function ArticleCard({
   // Default variant
   return (
     <Link href={`/articles/${article.slug}`} className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/40 rounded-xl">
-      <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 hover:border-brand-violet/40">
+      <Card className="p-0 overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 hover:border-brand-violet/40">
         <div className="relative w-full overflow-hidden" style={{ paddingTop: '56.25%' }}>
           <Image
             src={imgSrc}
@@ -195,14 +207,14 @@ export function ArticleCard({
           )}
         </div>
         
-        <CardContent className="p-4 flex flex-1 flex-col">
+        <CardContent className="p-3 sm:p-4 flex flex-1 flex-col">
           <div className="space-y-3 flex-1">
-            <Typography variant="h4" className="group-hover:text-brand-warm-orange transition-colors line-clamp-2">
+            <Typography variant="h5" className="sm:text-lg group-hover:text-brand-warm-orange transition-colors line-clamp-2">
               {article.title}
             </Typography>
             
             {article.excerpt && (
-              <Typography variant="body-small" className="text-gray-600 line-clamp-3">
+              <Typography variant="body-small" className="text-gray-600 line-clamp-2 sm:line-clamp-3 text-sm">
                 {article.excerpt}
               </Typography>
             )}

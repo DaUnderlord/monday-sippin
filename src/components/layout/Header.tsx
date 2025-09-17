@@ -38,7 +38,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-white/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-[#0b0b12]/80 dark:supports-[backdrop-filter]:bg-[#0b0b12]/60">
+    <header className="sticky top-0 z-50 bg-[rgb(230,229,255)]/50 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-[rgb(230,229,255)]/40 ring-1 ring-slate-900/5 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
 
@@ -106,14 +106,9 @@ export function Header() {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link href="/auth/login">
-                  <Button variant="ghost" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/auth/register">
+                <Link href="#newsletter">
                   <Button size="sm" className="bg-gradient-to-r from-[#1B4B5A] to-[#F4A261] hover:opacity-90">
-                    Sign Up
+                    Newsletter
                   </Button>
                 </Link>
               </div>
@@ -208,14 +203,9 @@ export function Header() {
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        <Link href="/auth/login" className="block">
-                          <Button variant="ghost" className="w-full">
-                            Sign In
-                          </Button>
-                        </Link>
-                        <Link href="/auth/register" className="block">
+                        <Link href="#newsletter" className="block">
                           <Button className="w-full bg-gradient-to-r from-[#1B4B5A] to-[#F4A261] hover:opacity-90">
-                            Sign Up
+                            Newsletter
                           </Button>
                         </Link>
                       </div>

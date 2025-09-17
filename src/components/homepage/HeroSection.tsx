@@ -2,14 +2,17 @@
 
 import { Article } from '@/types'
 import { Typography } from '@/components/ui/typography'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Clock, Calendar, ArrowRight, Sparkles, TrendingUp } from 'lucide-react'
-import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup'
+import { Clock, ArrowRight, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
-import { formatDistanceToNow } from 'date-fns'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import heroBg from '../../../assets/images/pexels-rdne-8370752.jpg'
+import { motion } from 'framer-motion'
+import { LottieHero } from '@/components/media/LottieHero'
+import logo from '../../../assets/images/monday-sippin-logo.png'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import BusinessmanCoffee from '@/../assets/images/Businessmanhavingcoffee.json'
 
 interface HeroSectionProps {
   featuredArticle: Article | null
@@ -19,24 +22,20 @@ interface HeroSectionProps {
 export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
   if (loading) {
     return (
-      <section className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left side - Brand and Newsletter */}
-              <div className="text-center lg:text-left">
-                <div className="animate-pulse">
-                  <div className="h-16 bg-gray-300/70 dark:bg-gray-700/50 rounded mb-6"></div>
-                  <div className="h-6 bg-gray-300/70 dark:bg-gray-700/50 rounded mb-8"></div>
-                  <div className="h-12 bg-gray-300/70 dark:bg-gray-700/50 rounded"></div>
-                </div>
-              </div>
-              
-              {/* Right side - Featured Article Placeholder */}
-              <div className="animate-pulse">
-                <div className="h-64 bg-gray-300/70 dark:bg-gray-700/50 rounded-lg"></div>
-              </div>
+      <section className="relative overflow-hidden text-slate-900 dark:text-white">
+        <div className="absolute inset-0 bg-[rgb(230,229,255)] dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-800" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-10 lg:pt-12 pb-20">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Left skeleton */}
+            <div className="space-y-5">
+              <div className="h-10 md:h-12 lg:h-16 w-3/4 rounded-lg bg-white/60 dark:bg-slate-800 animate-pulse" />
+              <div className="h-10 md:h-12 lg:h-16 w-2/3 rounded-lg bg-white/60 dark:bg-slate-800 animate-pulse" />
+              <div className="h-6 w-full max-w-3xl rounded-md bg-white/60 dark:bg-slate-800 animate-pulse" />
+              <div className="h-6 w-11/12 max-w-3xl rounded-md bg-white/60 dark:bg-slate-800 animate-pulse" />
+              <div className="h-6 w-10/12 max-w-3xl rounded-md bg-white/60 dark:bg-slate-800 animate-pulse" />
             </div>
+            {/* Right skeleton (animation placeholder) */}
+            <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[32rem] rounded-2xl bg-white/60 dark:bg-slate-800 animate-pulse" />
           </div>
         </div>
       </section>
@@ -44,151 +43,104 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
   }
 
   return (
-    <section className="relative overflow-hidden text-white">
-      {/* Background photo */}
+    <motion.section
+      className="relative overflow-hidden text-slate-900 dark:text-white -mt-6 md:-mt-8"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
+      {/* Background: consistent light color in both modes */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src={heroBg}
-          alt="Abstract market background"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-[rgb(230,229,255)]" />
       </div>
       
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 pt-10 md:pt-12 lg:pt-14 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             {/* Left side - Brand and Newsletter */}
-            <div className="text-center lg:text-left space-y-8">
-              <div className="space-y-6">
-                <div className="flex items-center justify-center lg:justify-start space-x-2 mb-4">
-                  <Sparkles className="h-6 w-6 text-brand-violet-tint animate-pulse" />
-                  <Badge variant="secondary" className="bg-white/15 text-white border border-white/20 backdrop-blur-sm px-3 py-1 font-medium">
-                    Premium Insights
-                  </Badge>
+            <motion.div
+              className="text-center lg:text-left space-y-6 relative"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
+              {/* Subtle background accent for the text area */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-3xl border border-white/30 backdrop-blur-sm -z-10" />
+              <div className="space-y-4 p-8 lg:p-10">
+                
+                {/* Brand logo with enhanced 3D depth */}
+                <div className="flex justify-center lg:justify-start mb-1 sm:mb-2">
+                  <Image
+                    src={logo}
+                    alt="Monday Sippin'"
+                    priority
+                    className="h-20 md:h-28 lg:h-36 w-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.15)] filter brightness-105 contrast-110"
+                    style={{
+                      filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.15)) drop-shadow(0 2px 8px rgba(0,0,0,0.1))'
+                    }}
+                  />
                 </div>
                 
-                <Typography variant="h1" className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent leading-tight">
-                  Monday Sippin&apos;
-                </Typography>
-                
-                <Typography variant="lead" className="text-xl md:text-2xl mb-8 text-white drop-shadow-md leading-relaxed max-w-2xl">
-                  Premium crypto & finance insights delivered in short, power-packed bits. 
-                  Perfect for your Monday morning coffee.
-                </Typography>
-                
-                <div className="flex items-center justify-center lg:justify-start space-x-6 text-white/80 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-4 w-4" />
-                    <span>Weekly Insights</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Clock className="h-4 w-4" />
-                    <span>5-min Reads</span>
-                  </div>
-                </div>
+                {/* Animated rotating subtitle copy */}
+                <AnimatedSubtitle />
               </div>
               
-              {/* Newsletter Signup */}
-              <div className="pt-4">
-                <NewsletterSignup variant="hero" />
-              </div>
-            </div>
-            
-            {/* Right side - Featured Article */}
-            {featuredArticle ? (
-              <div className="group relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
-                  <div className="flex items-center space-x-2 mb-6">
-                    <Badge variant="secondary" className="bg-white/15 text-white border border-white/20 backdrop-blur-sm font-semibold px-3 py-1">
-                      ✨ Featured
-                    </Badge>
-                    {featuredArticle.category && (
-                      <Badge variant="outline" className="border-white/30 text-white/90 backdrop-blur-sm">
-                        {featuredArticle.category.name}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  {featuredArticle.featured_image && (
-                    <div className="relative h-52 w-full mb-6 rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-brand-deep-teal to-brand-sage-green">
-                      <div className="absolute inset-0 flex items-center justify-center text-white/80">
-                        <span className="text-sm">Featured Image</span>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                    </div>
-                  )}
-                  
-                  <Typography variant="h3" className="text-white mb-4 line-clamp-2 font-bold leading-tight">
-                    {featuredArticle.title}
-                  </Typography>
-                  
-                  {featuredArticle.excerpt && (
-                    <Typography variant="body" className="text-white/85 mb-6 line-clamp-3 leading-relaxed">
-                      {featuredArticle.excerpt}
-                    </Typography>
-                  )}
-                  
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                    <div className="flex items-center space-x-4 text-sm text-white/70">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{featuredArticle.reading_time} min read</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {formatDistanceToNow(new Date(featuredArticle.published_at || featuredArticle.created_at), { addSuffix: true })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Link href={`/articles/${featuredArticle.slug}`}>
-                    <Button 
-                      variant="brand-secondary"
-                      className="w-full font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
-                    >
-                      Read Article
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="group relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-3xl blur opacity-75"></div>
-                <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center shadow-2xl">
-                  <div className="mb-6">
-                    <Sparkles className="h-12 w-12 text-brand-violet-tint mx-auto mb-4 animate-pulse" />
-                  </div>
-                  <Typography variant="h4" className="text-white mb-4 font-bold">
-                    Featured Article Coming Soon
-                  </Typography>
-                  <Typography variant="body" className="text-white/85 mb-8 leading-relaxed">
-                    Our first premium featured article will appear here once published. 
-                    Get ready for expert insights!
-                  </Typography>
-                  <Link href="/articles">
-                    <Button 
-                      variant="brand-secondary"
-                      className="font-semibold py-3 px-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
-                    >
-                      Browse Articles
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+            </motion.div>
+
+            {/* Right side - Lottie animation */}
+            <motion.div
+              className="w-full h-80 sm:h-96 md:h-[28rem] lg:h-[28rem] xl:h-[32rem]"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <LottieHero className="w-full h-full" loop autoplay speed={1} jsonData={BusinessmanCoffee} />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
+  )
+}
+
+// Animated subtitle component cycling through expanded copy
+function AnimatedSubtitle() {
+  const lines = [
+    'Your Monday morning briefing on crypto markets, macro trends, and on-chain insights that actually matter for your portfolio.',
+    'Cut through the noise with curated analysis that connects traditional finance with digital asset movements.',
+    'Weekly deep-dives into market signals, regulatory shifts, and emerging opportunities — delivered in digestible 5-minute reads.',
+    'Join thousands of investors who start their week with actionable intelligence, not speculation.'
+  ]
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % lines.length)
+    }, 4500)
+    return () => clearInterval(id)
+  }, [])
+
+  return (
+    <div className="h-[9rem] md:h-[7.5rem] relative overflow-hidden">
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="text-lg md:text-xl text-black dark:text-slate-100 leading-relaxed max-w-3xl mx-auto lg:mx-0"
+      >
+        {lines[index]}
+      </motion.div>
+    </div>
   )
 }

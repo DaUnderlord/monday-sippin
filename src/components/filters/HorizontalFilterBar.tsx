@@ -78,12 +78,12 @@ function FilterRow({
                 }
               }}
               className={`
-                relative transition-all duration-200 hover:scale-105
+                relative transition-all duration-200 hover:scale-105 cursor-pointer
                 ${isSelected 
                   ? 'bg-primary text-primary-foreground border-transparent shadow-md' 
                   : 'border-gray-200 dark:border-gray-700 hover:border-primary/50'
                 }
-                ${level === 0 ? 'font-semibold px-4 py-2' : 'px-3 py-1.5'}
+                ${level === 0 ? 'font-semibold px-6 py-3 text-base' : 'px-4 py-2 text-sm'}
               `}
             >
               <span className="flex items-center gap-2">
@@ -161,23 +161,8 @@ export function HorizontalFilterBar({
     })
   }
 
-  if (loading) {
-    return (
-      <div className={`bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 ${className}`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="space-y-3">
-            <div className="flex gap-3">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // Don't show loading state for filters - they should load instantly
+  // Only show skeleton if there are no filters at all
 
   return (
     <div className={`bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 ${className}`}>

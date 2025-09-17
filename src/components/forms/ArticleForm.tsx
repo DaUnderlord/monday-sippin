@@ -174,20 +174,47 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
     }
   }
 
+  const handleMediaUpload = async (file: File): Promise<string> => {
+    try {
+      setIsUploading(true)
+      let url: string
+      
+      if (file.type.startsWith('image/')) {
+        url = await storageService.uploadImage(file, 'articles')
+      } else if (file.type.startsWith('video/')) {
+        url = await storageService.uploadVideo(file, 'articles')
+      } else {
+        throw new Error('Unsupported file type')
+      }
+      
+      return url
+    } catch (error) {
+      console.error('Media upload failed:', error)
+      toast({
+        title: 'Media upload failed',
+        description: 'Please try again with a different file.',
+        variant: 'destructive'
+      })
+      throw error
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
   const handleFeaturedImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       try {
-        const url = await handleImageUpload(file)
+        const url = await handleMediaUpload(file)
         setFormData(prev => ({ ...prev, featured_image: url }))
       } catch (error) {
-        console.error('Failed to upload featured image:', error)
+        console.error('Failed to upload featured media:', error)
       }
     }
   }
 
   const handleFeaturedImageSelect = (media: any) => {
-    if (media.type === 'image') {
+    if (media.type === 'image' || media.type === 'video' || media.type === 'embed') {
       setFormData(prev => ({ ...prev, featured_image: media.url }))
     }
   }
@@ -436,6 +463,7 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
                     content={formData.content}
                     onChange={(content) => setFormData(prev => ({ ...prev, content }))}
                     onImageUpload={handleImageUpload}
+                    onVideoUpload={handleMediaUpload}
                     placeholder="Start writing your article..."
                   />
                 </div>
@@ -468,10 +496,10 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
                   <div className="flex gap-2">
                     <MediaPicker
                       onSelect={handleFeaturedImageSelect}
-                      acceptedTypes={['image']}
+                      acceptedTypes={['image', 'video']}
                       trigger={
                         <Button variant="outline" size="sm" className="flex-1">
-                          Change Image
+                          Change Media
                         </Button>
                       }
                     />
@@ -491,13 +519,13 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
                     className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg"
                   >
                     <Upload className="h-8 w-8 text-gray-400 mb-2" />
-                    <span className="text-sm text-gray-600 mb-3">Upload or select featured image</span>
+                    <span className="text-sm text-gray-600 mb-3">Upload or select featured image/video</span>
                   </div>
                   
                   <div className="flex gap-2">
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/*,video/*"
                       onChange={handleFeaturedImageUpload}
                       className="hidden"
                       id="featured-image"
@@ -510,7 +538,7 @@ export function ArticleForm({ article, onSave, onCancel }: ArticleFormProps) {
                     
                     <MediaPicker
                       onSelect={handleFeaturedImageSelect}
-                      acceptedTypes={['image']}
+                      acceptedTypes={['image', 'video', 'embed']}
                       trigger={
                         <Button variant="brand" size="sm" className="flex-1">
                           Select from Library

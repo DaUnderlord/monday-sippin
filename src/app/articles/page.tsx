@@ -7,7 +7,7 @@ import { HorizontalFilterBar } from '@/components/filters/HorizontalFilterBar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { Article, PaginatedResponse } from '@/types'
 import { getMockLatestArticles } from '@/lib/mock-content'
 import { FilteredArticlesList } from '@/components/filters'
@@ -152,8 +152,7 @@ function ArticlesPageContent() {
     )
   }
 
-  const featuredArticle = articles[0]
-  const gridArticles = articles.slice(1)
+  const gridArticles = articles
 
   return (
     <div className="min-h-screen bg-white py-0">
@@ -171,13 +170,35 @@ function ArticlesPageContent() {
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute inset-0 bg-[radial-gradient(800px_200px_at_50%_0%,rgba(0,0,0,0.25),transparent)]" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 text-center">
-          <Typography variant="h1" className="mb-2 sm:mb-4 text-white">
-            Latest Articles
-          </Typography>
-          <Typography variant="lead" className="text-white/90 max-w-2xl mx-auto">
-            Discover insights, analysis, and knowledge in short power-packed bits perfect for your Monday morning coffee.
-          </Typography>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <Typography variant="h1" className="mb-2 sm:mb-4 text-white">
+              Articles
+            </Typography>
+            <Typography variant="lead" className="text-white/90 mb-8">
+              Discover insights, analysis, and knowledge in short power-packed bits perfect for your Monday morning coffee.
+            </Typography>
+            
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  className="w-full pl-12 pr-4 py-4 text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 rounded-2xl focus:bg-white/20 focus:border-white/40 focus:outline-none"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      const query = (e.target as HTMLInputElement).value
+                      if (query.trim()) {
+                        window.location.href = `/search?q=${encodeURIComponent(query)}`
+                      }
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -194,7 +215,7 @@ function ArticlesPageContent() {
           className="mb-8 sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/80 border-b"
         />
 
-        {/* When filters are active, show filtered list instead of featured/grid */}
+        {/* When filters are active, show filtered list instead of grid */}
         {selectedFilters.length > 0 ? (
           <div className="mb-12">
             <FilteredArticlesList
@@ -204,26 +225,9 @@ function ArticlesPageContent() {
             />
           </div>
         ) : (
-        <>
-          {/* Featured Article */}
-          {featuredArticle && (
+          /* Articles Grid */
+          gridArticles.length > 0 && (
           <div className="mb-12">
-            <Typography variant="h2" className="mb-6">Featured</Typography>
-            <ArticleCard 
-              article={featuredArticle} 
-              variant="featured"
-              showAuthor={true}
-              showCategory={true}
-              showTags={true}
-              showStats={true}
-            />
-          </div>
-          )}
-
-          {/* Articles Grid */}
-          {gridArticles.length > 0 && (
-          <div className="mb-12">
-            <Typography variant="h2" className="mb-6">Recent Articles</Typography>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {gridArticles.map((article) => (
                 <ArticleCard 
@@ -238,8 +242,7 @@ function ArticlesPageContent() {
               ))}
             </div>
           </div>
-          )}
-        </>
+          )
         )}
 
         {/* Pagination (only when not filtering) */}

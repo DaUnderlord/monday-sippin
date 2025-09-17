@@ -95,6 +95,25 @@ export const articleService = {
     return data;
   },
 
+  async getRecentArticlesByCategory(categoryId: string, limit = 4): Promise<Article[]> {
+    const { data, error } = await supabase
+      .from('articles')
+      .select(`
+        *,
+        author:profiles(*),
+        category:categories(*),
+        tags:article_tags(tag:tags(*)),
+        filters:article_filters(filter:filters(*))
+      `)
+      .eq('status', 'published')
+      .eq('category_id', categoryId)
+      .order('published_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data || [];
+  },
+
   async createArticle(articleData: ArticleFormData, authorId: string): Promise<Article> {
     const { tags, filters, ...articleFields } = articleData;
     

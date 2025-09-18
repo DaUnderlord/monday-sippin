@@ -184,7 +184,7 @@ export function ArticleCard({
   // Default variant
   return (
     <Link href={`/articles/${article.slug}`} className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/40 rounded-xl">
-      <Card className="p-0 overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 hover:border-brand-violet/40">
+      <Card className="p-0 overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 hover:border-brand-violet/40 bg-white dark:bg-[#11121a]/90 border border-gray-100 dark:border-white/10">
         <div className="relative w-full overflow-hidden" style={{ paddingTop: '56.25%' }}>
           <Image
             src={imgSrc}
@@ -219,7 +219,7 @@ export function ArticleCard({
               </Typography>
             )}
 
-            <div className="flex items-center justify-between pt-3 border-t mt-auto">
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-800 mt-auto">
               {showAuthor && article.author && (
                 <div className="flex items-center space-x-2">
                   <Avatar className="h-6 w-6">

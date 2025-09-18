@@ -131,20 +131,18 @@ export function TrendingArticles({ articles, loading }: TrendingArticlesProps) {
         </div>
 
         {/* Mobile Carousel */}
-        <div className="md:hidden -mx-6 px-6 py-4 relative mb-16">
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent" />
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4">
+        <div className="md:hidden -mx-6 px-6 py-2 relative mb-14">
+          <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-3">
             {articles.map((article, index) => (
               <motion.div
                 key={article.id}
-                className="snap-start shrink-0 w-[85%] xs:w-[80%] max-w-xs relative group"
+                className="snap-start shrink-0 w-[85%] xs:w-[82%] max-w-sm relative group pt-4"
                 initial={{ opacity: 0, x: 16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.05 * index, ease: 'easeOut' }}
               >
-                <div className="absolute -top-3 -left-3 z-20">
+                <div className="absolute top-0 left-2 z-20">
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-brand-violet-dark to-brand-violet rounded-full blur-sm opacity-75"></div>
                     <div className="relative bg-gradient-to-r from-brand-violet-dark to-brand-violet text-white rounded-full h-9 w-9 flex items-center justify-center text-xs font-bold shadow-xl border-2 border-white">

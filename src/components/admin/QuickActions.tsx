@@ -42,6 +42,13 @@ export function QuickActions({ onTabChange }: QuickActionsProps) {
       variant: 'outline' as const
     },
     {
+      title: 'Manage Categories',
+      description: 'Create and organize categories',
+      icon: Tags,
+      href: '/admin/categories',
+      variant: 'outline' as const
+    },
+    {
       title: 'Manage Filters',
       description: 'Configure content filters',
       icon: Filter,

@@ -7,10 +7,29 @@ import Image from 'next/image'
 import categoriesBg from '@/../assets/images/pexels-weekendplayer-187041.jpg'
 
 import { Input } from '@/components/ui/input'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export function CategoriesHero() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [isDark, setIsDark] = useState(false)
+
+  // Track theme to adapt the curved wave color to the next section
+  // and adjust hero background per theme.
+  useEffect(() => {
+    try {
+      const update = () => setIsDark(document.documentElement.classList.contains('dark'))
+      update()
+      const mql = window.matchMedia('(prefers-color-scheme: dark)')
+      const onChange = () => update()
+      mql.addEventListener?.('change', onChange)
+      const observer = new MutationObserver(update)
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+      return () => {
+        mql.removeEventListener?.('change', onChange)
+        observer.disconnect()
+      }
+    } catch {}
+  }, [])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,7 +39,11 @@ export function CategoriesHero() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800">
+    <section className="relative overflow-hidden text-slate-900 dark:text-white">
+      {/* Background: light brand color in light, premium dark gradient in dark */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[rgb(230,229,255)] dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-800" />
+      </div>
       {/* Background photo */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -91,12 +114,12 @@ export function CategoriesHero() {
         </div>
       </div>
 
-      {/* Decorative bottom wave */}
+      {/* Decorative bottom wave (matches next section background) */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-            fill="rgb(248 250 252)"
+            fill={isDark ? '#0b0b12' : 'rgb(248 250 252)'}
           />
         </svg>
       </div>

@@ -55,10 +55,10 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
         <div className="absolute inset-0 bg-[rgb(230,229,255)]" />
       </div>
       
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 pt-10 md:pt-12 lg:pt-14 pb-20">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 lg:pt-8 pb-20">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -66,7 +66,7 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
           >
             {/* Left side - Brand and Newsletter */}
             <motion.div
-              className="text-center lg:text-left space-y-6 relative"
+              className="order-2 lg:order-1 text-center lg:text-left space-y-6 relative lg:-mt-4"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -74,10 +74,10 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
             >
               {/* Subtle background accent for the text area */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-3xl border border-white/30 backdrop-blur-sm -z-10" />
-              <div className="space-y-4 p-8 lg:p-10">
+              <div className="space-y-3 lg:space-y-4 p-8 lg:p-10">
                 
                 {/* Brand logo with enhanced 3D depth */}
-                <div className="flex justify-center lg:justify-start mb-1 sm:mb-2">
+                <div className="flex justify-center lg:justify-start mb-2">
                   <Image
                     src={logo}
                     alt="Monday Sippin'"
@@ -97,7 +97,7 @@ export function HeroSection({ featuredArticle, loading }: HeroSectionProps) {
 
             {/* Right side - Lottie animation */}
             <motion.div
-              className="w-full h-80 sm:h-96 md:h-[28rem] lg:h-[28rem] xl:h-[32rem]"
+              className="order-1 lg:order-2 w-full h-80 sm:h-96 md:h-[28rem] lg:h-[28rem] xl:h-[32rem]"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -137,7 +137,7 @@ function AnimatedSubtitle() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="text-lg md:text-xl text-black dark:text-slate-100 leading-relaxed max-w-3xl mx-auto lg:mx-0"
+        className="text-lg md:text-xl text-black dark:text-black leading-relaxed max-w-3xl mx-auto lg:mx-0"
       >
         {lines[index]}
       </motion.div>

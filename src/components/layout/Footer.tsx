@@ -97,6 +97,9 @@ export function Footer() {
             <Link href="/rss" className="text-sm hover:text-gray-900 dark:hover:text-white transition-colors">
               RSS Feed
             </Link>
+            <a href="https://portfolio-eight-rho-82.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-gray-900 dark:hover:text-white transition-colors">
+              Solus Portfolio
+            </a>
           </div>
         </div>
       </div>
